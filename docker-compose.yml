@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mysql-db:
+    container_name: mysql-docker
+    image: mysql:8.0.20
+    ports:
+    - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+    - "${MYSQL_DIR}/data:/var/lib/mysql"
+    - "${MYSQL_DIR}/config:/etc/mysql/config.d"
+  redis:
+    container_name: redis-docker
+    image: redis:6.0.6
+    volumes:
+    - "${REDIS_DIR}/data:/data"
+    ports:
+    - "6379:6379"
+    command:
+      redis-server
+  rabbitmq:
+    container_name: rabbitmq-docker
+    image: rabbitmq:3.8.6-management-alpine
+    volumes:
+    - "${RABBITMQ_DIR}/data:/var/lib/rabbitmq/mnesia"
+    ports:
+    - "5672:5672"
+    - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
